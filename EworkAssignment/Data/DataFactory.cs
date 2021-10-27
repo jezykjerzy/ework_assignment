@@ -10,7 +10,7 @@ namespace EworkAssignment.Data
     internal class DataFactory
     {
 
-        private const int PriceCount = 100000;
+        private const int PriceCount = 1000000;
         private const int PositionCount = 1000;
         private ProductKeyResolver _productKeyResolver;
 
