@@ -9,11 +9,11 @@ namespace EworkAssignment.Tasks
 
     class Task1
     {
-        private DataFactory _factory;
+        private DataFactoryForTask1 _factory;
 
         public Task1()
         {
-            _factory = new DataFactory();
+            _factory = new DataFactoryForTask1(1000, 100000);
         }
         public void Run()
         {

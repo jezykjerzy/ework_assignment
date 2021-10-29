@@ -7,21 +7,43 @@ using System.Linq;
 
 namespace EworkAssignment.Data
 {
-    internal class DataFactory
+
+    public abstract class DataFactory
     {
-
-        private const int PriceCount = 1000000;
-        private const int PositionCount = 1000;
-        private ProductKeyResolver _productKeyResolver;
-
-        public DataFactory()
+        internal Price[] GeneratePrices(int pricesCount, IProductKeyResolver productKeyResolver)
         {
-            _productKeyResolver = new ProductKeyResolver(PositionCount);
+            return Builder<Price>.CreateListOfSize(pricesCount)
+                                 .All()
+                                 .With(price => price.Value = Faker.RandomNumber.Next(1, 10000))
+                                 .With(price => price.ProductKey = productKeyResolver.Resolve())
+                                 .Build()
+                                 .ToArray();
+        }
+    }
+
+
+
+    internal class DataFactoryForTask1 : DataFactory
+    {
+        private readonly int _positionCount;
+        private readonly int _pricesCount;
+        private IProductKeyResolver _productKeyResolver;
+
+        public DataFactoryForTask1(int positionCount, int pricesCount)
+        {
+            _productKeyResolver = new ProductKeyResolver(positionCount);
+            _positionCount = positionCount;
+            _pricesCount = pricesCount;
+        }
+
+        public Price[] GeneratePrices()
+        {
+            return GeneratePrices(_pricesCount, _productKeyResolver);
         }
 
         internal Position[] GeneratePositions()
         {
-            return Builder<Position>.CreateListOfSize(PositionCount)
+            return Builder<Position>.CreateListOfSize(_positionCount)
                                     .All()
                                     .With(position => position.Amount = Faker.RandomNumber.Next(1, 1000))
                                     .With(position => position.ProductKey = _productKeyResolver.Resolve())
@@ -29,16 +51,22 @@ namespace EworkAssignment.Data
                                     .OrderBy(position => position.Amount)
                                     .ToArray();
         }
-            
 
-        internal Price[] GeneratePrices()
+    }
+
+    internal class DataFactoryForTask2 : DataFactory
+    {
+        private IProductKeyResolver _productKeyResolver;
+
+        public DataFactoryForTask2(int productKeyCount)
         {
-            return Builder<Price>.CreateListOfSize(PriceCount)
-                                 .All()
-                                 .With(price => price.Value = Faker.RandomNumber.Next(1, 10000))
-                                 .With(price => price.ProductKey = _productKeyResolver.Resolve())
-                                 .Build()
-                                 .ToArray();
+            _productKeyResolver = new ProductKeyResolver(productKeyCount);
         }
+
+        public Price[] GeneratePrices(int pricesCount)
+        {
+            return GeneratePrices(pricesCount, _productKeyResolver);
+        }
+
     }
 }

@@ -8,7 +8,7 @@ namespace EworkAssignment
         static void Main(string[] args)
         {
             new Task1().Run();
-            //Task2.Run();
+            //new Task2().Run();
             //Task3.Run()
         }
     }

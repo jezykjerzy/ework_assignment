@@ -2,19 +2,25 @@
 
 namespace EworkAssignment.Data
 {
-    internal class ProductKeyResolver
+    // Could be more sophisticated resolver
+    internal interface IProductKeyResolver
     {
-        private int _positionCount;
+        string Resolve();
+    }
+
+    internal class ProductKeyResolver : IProductKeyResolver
+    {
+        private int _productKeyCount;
         private int counter;
 
-        public ProductKeyResolver(int positionCount)
+        public ProductKeyResolver(int productKeyCount)
         {
-            _positionCount = positionCount;
+            _productKeyCount = productKeyCount;
         }
 
-        internal string Resolve()
+        public string Resolve()
         {
-            if(counter >= _positionCount)
+            if(counter >= _productKeyCount)
             {
                 counter = 0;
             }
